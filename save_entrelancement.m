@@ -9,7 +9,7 @@ R = 1/2; % Rendement de la communication
 pqt_par_trame = 1000; % Nombre de paquets par trame
 bit_par_pqt   = 330;% Nombre de bit par paquet
 K = pqt_par_trame*bit_par_pqt; % Nombre de bits de message par trame
-N = K/R; % Nombre de bits codÃ©s par trame (codÃ©e)
+N = K/R; % Nombre de bits codés par trame (codée)
 
 M = 2; % Modulation BPSK <=> 2 symboles
 phi0 = 0; % Offset de phase our la BPSK
@@ -50,14 +50,14 @@ awgn_channel = comm.AWGNChannel(...
     'EsNo',EsN0dB(1),...
     'SignalPower',1);
 
-%% Construction de l'objet Ã©valuant le TEB
+%% Construction de l'objet évaluant le TEB
 stat_erreur = comm.ErrorRate(); % Calcul du nombre d'erreur et du BER
 
-%% Initialisation des vecteurs de rÃ©sultats
+%% Initialisation des vecteurs de résultats
 ber = zeros(1,length(EbN0dB));
 Pe = qfunc(sqrt(2*EbN0));
 
-%% PrÃ©paration de l'affichage
+%% Préparation de l'affichage
 semilogy(EbN0dB,ber,'XDataSource','EbN0dB', 'YDataSource','ber');
 hold all
 ylim([1e-6 1])
@@ -66,7 +66,7 @@ xlabel('$\frac{E_b}{N_0}$ en dB','Interpreter', 'latex', 'FontSize',14)
 ylabel('TEB','Interpreter', 'latex', 'FontSize',14)
 
 
-%% PrÃ©paration de l'affichage en console
+%% Préparation de l'affichage en console
 msg_format = '|   %7.2f  |   %9d   |  %9d | %2.2e |  %8.2f kO/s |   %8.2f kO/s |   %8.2f s |\n';
 
 %% Simulation
@@ -97,7 +97,7 @@ H = comm.ConvolutionalEncoder(T);
 H.TerminationMethod = 'Terminated';
 V = comm.ViterbiDecoder(T);
 V.TerminationMethod = 'Terminated';
-V.TracebackDepth = 50; %% par rapport Ã  la mÃ©moire du code (">5*longueur du code")
+V.TracebackDepth = 50; %% par rapport Ã  la mémoire du code (">5*longueur du code")
 V.InputFormat = 'Unquantized';
 
 
@@ -108,7 +108,7 @@ for i_snr = 1:length(EbN0dB)
     
     stat_erreur.reset; % reset du compteur d'erreur
     
-    err_stat    = [0 0 0]; % vecteur rÃ©sultat de stat_erreur
+    err_stat    = [0 0 0]; % vecteur résultat de stat_erreur
     msg_crs = [];
     rec_msg_entre = [];
     rec_msg = [];
@@ -125,8 +125,8 @@ for i_snr = 1:length(EbN0dB)
         
         %% Emetteur
 %         for i =1:pqt_par_trame % Entrelacement
-%             tx_tic = tic;                 % Mesure du dÃ©bit d'encodage
-%             msg_temp    = randi([0,1],bit_par_pqt,1);    % GÃ©nÃ©ration du message alÃ©atoire
+%             tx_tic = tic;                 % Mesure du débit d'encodage
+%             msg_temp    = randi([0,1],bit_par_pqt,1);    % Génération du message aléatoire
 %             msg = [msg msg_temp.'];
 %             %         code = rsenc(msg,n_solmon,k_solompon)         % Encodage Reed Solomon
 %             msg_crs = [msg_crs step(RS,msg_temp)];       % Encodage Reed Solomon
@@ -134,7 +134,7 @@ for i_snr = 1:length(EbN0dB)
 %             msg = msg.';
 
             tx_tic = tic;
-            msg_temp    = randi([0,1],K,1);    % GÃ©nÃ©ration du message alÃ©atoire
+            msg_temp    = randi([0,1],K,1);    % Génération du message aléatoire
             msg_crs =  step(RS,msg_temp);
             
         
@@ -143,40 +143,40 @@ for i_snr = 1:length(EbN0dB)
             msg_c = H.step(msg_crs(i,:).');          % Encodage du message
             
             x      = step(mod_psk,  msg_c); % Modulation QPSK
-            T_tx   = T_tx+toc(tx_tic);    % Mesure du dÃ©bit d'encodage
+            T_tx   = T_tx+toc(tx_tic);    % Mesure du débit d'encodage
             
             %% Canal
             y     = step(awgn_channel,x); % Ajout d'un bruit gaussien
             
             
             %% Recepteur
-            rx_tic = tic;                  % Mesure du dÃ©bit de dÃ©codage
+            rx_tic = tic;                  % Mesure du débit de décodage
             
-            Lc = step(demod_psk,y);        % DÃ©modulation (retourne des LLRs)
+            Lc = step(demod_psk,y);        % Démodulation (retourne des LLRs)
             
             rec_msg = [rec_msg V.step(Lc(1:pqt_par_trame/R))]; %Decodage de viterbi
         end 
      
-         for i =1:pqt_par_trame %    % DÃ©entrelacement
+         for i =1:pqt_par_trame %    % Déentrelacement
             rec_msg_entre = [rec_msg_entre rec_msg(i,:)];       % Encodage Reed Solomon
          end
         temp = rec_msg_entre.';
         rec_msg = step(RSdec,temp);
        
         
-        T_rx    = T_rx + toc(rx_tic);  % Mesure du dÃ©bit de dÃ©codage
+        T_rx    = T_rx + toc(rx_tic);  % Mesure du débit de décodage
         
         err_stat   = step(stat_erreur, msg, rec_msg); % Comptage des erreurs binaires
         
-        %% Affichage du rÃ©sultat
+        %% Affichage du résultat
         if mod(n_frame,100) == 1
             msgg = sprintf(msg_format,...
                 EbN0dB(i_snr),         ... % EbN0 en dB
-                err_stat(3),           ... % Nombre de bits envoyÃ©s
-                err_stat(2),           ... % Nombre d'erreurs observÃ©es
+                err_stat(3),           ... % Nombre de bits envoyés
+                err_stat(2),           ... % Nombre d'erreurs observées
                 err_stat(1),           ... % BER
-                err_stat(3)/8/T_tx/1e3,... % DÃ©bit d'encodage
-                err_stat(3)/8/T_rx/1e3,... % DÃ©bit de dÃ©codage
+                err_stat(3)/8/T_tx/1e3,... % Débit d'encodage
+                err_stat(3)/8/T_rx/1e3,... % Débit de décodage
                 toc(general_tic)*(nbr_erreur - min(err_stat(2),nbr_erreur))/nbr_erreur); % Temps restant
             fprintf(reverseStr);
             msg_sz =  fprintf(msgg);

@@ -1,4 +1,4 @@
-function [] = print_tab_recap(poly,memoire, nb_msg, Gain,Debit)
+function [] = print_tab_recap_backup(poly,memoire, nb_msg, Gain,Debit)
 % 
 % msg_format = '|   %7.2f %9d  |  %9d |  %2.2e |  %8.2f |   %8.2f |  \n';
 % fprintf(      '|------------|---------------|------------|----------|----------------|-----------------|--------------|\n')

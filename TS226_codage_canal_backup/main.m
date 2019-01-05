@@ -6,7 +6,7 @@ clc
 % -------------------------------------------------------------------------
 R = 1/2; % Rendement de la communication
 
-pqt_par_trame = 1000; % Nombre de paquets par trame
+pqt_par_trame = 1200; % Nombre de paquets par trame
 bit_par_pqt   = 330;% Nombre de bit par paquet
 K = pqt_par_trame*bit_par_pqt; % Nombre de bits de message par trame
 N = K/R; % Nombre de bits codés par trame (codée)
@@ -21,7 +21,7 @@ EbN0dB_step = 1;% Pas de EbN0
 nbr_erreur  = 100;  % Nombre d'erreurs à observer avant de calculer un BER
 nbr_bit_max = 100e6;% Nombre de bits max à simuler
 ber_min     = 7e-6; % BER min
-ber_min     = 3e-5; % BER min
+ber_min     = 2e-5; % BER min
 
 EbN0dB = EbN0dB_min:EbN0dB_step:EbN0dB_max;     % Points de EbN0 en dB à simuler
 EbN0   = 10.^(EbN0dB/10);% Points de EbN0 à simuler
