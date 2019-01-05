@@ -21,7 +21,7 @@ EbN0dB_step = 1;% Pas de EbN0
 nbr_erreur  = 100;  % Nombre d'erreurs à observer avant de calculer un BER
 nbr_bit_max = 100e6;% Nombre de bits max à simuler
 ber_min     = 7e-6; % BER min
-ber_min     = 2e-5; % BER min
+ber_min     = 3e-5; % BER min
 
 EbN0dB = EbN0dB_min:EbN0dB_step:EbN0dB_max;     % Points de EbN0 en dB à simuler
 EbN0   = 10.^(EbN0dB/10);% Points de EbN0 à simuler
@@ -66,12 +66,12 @@ p4 = [133 171];
 
 
 %% Préparation de l'affichage
-% semilogy(EbN0dB,ber,'XDataSource','EbN0dB', 'YDataSource','ber');
-% hold all
-% ylim([1e-6 1])
-% grid on
-% xlabel('$\frac{E_b}{N_0}$ en dB','Interpreter', 'latex', 'FontSize',14)
-% ylabel('TEB','Interpreter', 'latex', 'FontSize',14)
+semilogy(EbN0dB,ber,'XDataSource','EbN0dB', 'YDataSource','ber');
+hold all
+ylim([1e-6 1])
+grid on
+xlabel('$\frac{E_b}{N_0}$ en dB','Interpreter', 'latex', 'FontSize',14)
+ylabel('TEB','Interpreter', 'latex', 'FontSize',14)
 
 
 %% Préparation de l'affichage en console
@@ -161,7 +161,7 @@ for i = 1:5
                     err_stat(2),           ... % Nombre d'erreurs observées
                     err_stat(1),           ... % BER
                     err_stat(3)/8/T_tx/1e3,... % Débit d'encodage
-                    err_stat(3)/8/T_rx/1e3,... % Débit de décodage
+                    err_stat(3)/8/T_rx/1e3,... % Débit de d�codage
                     toc(general_tic)*(nbr_erreur - min(err_stat(2),nbr_erreur))/nbr_erreur); % Temps restant
                 fprintf(reverseStr);
                 msg_sz =  fprintf(msgg);
@@ -193,7 +193,7 @@ fprintf('|------------|---------------|------------|----------|----------------|
 print_tab_recap([p1; p2 ; p3; p4],[2 3 4 7],K,Gain,Debit);
 
 
-legend('TEB (non code)', '(133, 171)_{8}', '(13, 15)', '(7, 5)', '(2, 3)_{8}')
+legend('Non cod�', '(133, 171)_{8}', '(13, 15)_8', '(7, 5)_8', '(2, 3)_{8}')
 xlim([-2 13])
 ylim([1e-6 1])
 
