@@ -20,7 +20,7 @@ EbN0dB_step = 1;% Pas de EbN0
 
 nbr_erreur  = 100;  % Nombre d'erreurs Ã  observer avant de calculer un BER
 nbr_bit_max = 100e6;% Nombre de bits max Ã  simuler
-ber_min     = 300e-5; % BER min
+ber_min     = 3e-5; % BER min
 
 EbN0dB = EbN0dB_min:EbN0dB_step:EbN0dB_max;     % Points de EbN0 en dB Ã  simuler
 EbN0   = 10.^(EbN0dB/10);% Points de EbN0 Ã  simuler
@@ -459,7 +459,8 @@ fprintf('|------------|---------------|------------|----------|----------------|
 %%
 % print_tab_recap([p1; p2 ; p3; p4],[2 3 4 7],K,Gain,Debit);
 
-legend('Code concaténé ', 'Code concaténé sans entrelaceur', 'Code convolutif', 'TEB (non code)')
+
+legend('Code concaténé ', 'Code concaténé sans entrelaceur', 'Code convolutif', '(7, 5)', 
 xlim([-2 13])
 ylim([1e-6 1])
 
